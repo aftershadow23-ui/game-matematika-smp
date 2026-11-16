@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Petualangan Matematika SMP</title>
 <meta name="description" content="Game matematika interaktif untuk anak SMP - Kurikulum Merdeka">
-<meta name="theme-color" content="#1E3A8A"> <!-- Warna Biru Tua untuk SMP -->
+<meta name="theme-color" content="#1E3A8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Matematika SMP">
@@ -16,7 +16,7 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font lebih formal untuk SMP */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
     min-height: 100vh; display: flex; padding: 20px;
   }
@@ -60,22 +60,31 @@
   .user-item .avatar-img { font-size: 32px; margin-right: 12px; }
   .user-item .name { font-weight: bold; color: #333; }
   .user-item .meta { font-size: 12px; color: #888; }
-  .grade-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
-  .grade-btn {
-    padding: 16px; font-family: inherit; font-size: 15px;
-    border: 2px solid #3B82F6; background: #fff; color: #1E3A8A;
-    border-radius: 10px; cursor: pointer; transition: all 0.15s; font-weight: bold;
-    text-align: left; line-height: 1.3; display: flex; justify-content: space-between; align-items: center;
-  }
-  .grade-btn:hover { background: #3B82F6; color: #fff; transform: scale(1.02); }
-  .grade-btn .grade-info { flex: 1; }
-  .grade-btn .grade-num { font-size: 18px; display: block; margin-bottom: 4px; }
-  .grade-btn small { display: block; font-size: 12px; font-weight: normal; opacity: 0.85; }
-  .grade-btn .best { display: block; font-size: 13px; margin-top: 6px; color: #F59E0B; font-weight: bold; }
-  .grade-btn:hover .best { color: #FDE68A; }
-  .grade-btn .arrow { font-size: 20px; opacity: 0.5; }
-  .grade-btn:hover .arrow { opacity: 1; }
   
+  .menu-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .menu-btn {
+    padding: 16px; font-family: inherit; font-size: 16px;
+    border: 2px solid #3B82F6; background: #fff; color: #1E3A8A;
+    border-radius: 12px; cursor: pointer; transition: all 0.15s; font-weight: bold;
+    text-align: left; display: flex; justify-content: space-between; align-items: center;
+  }
+  .menu-btn:hover { background: #3B82F6; color: #fff; transform: scale(1.02); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+  .menu-btn .grade-info { flex: 1; }
+  .menu-btn .grade-num { font-size: 18px; display: block; margin-bottom: 4px; }
+  .menu-btn small { display: block; font-size: 12px; font-weight: normal; opacity: 0.85; margin-top: 4px;}
+  .menu-btn .best { display: block; font-size: 12px; margin-top: 6px; color: #F59E0B; font-weight: bold; }
+  .menu-btn:hover .best { color: #FDE68A; }
+  .menu-btn .arrow { font-size: 20px; opacity: 0.5; }
+  .menu-btn:hover .arrow { opacity: 1; }
+
+  /* Warna khusus level */
+  .level-beginner { border-color: #10B981 !important; color: #065F46 !important; }
+  .level-beginner:hover { background: #10B981 !important; color: #fff !important; }
+  .level-intermediate { border-color: #F59E0B !important; color: #92400E !important; }
+  .level-intermediate:hover { background: #F59E0B !important; color: #fff !important; }
+  .level-advanced { border-color: #EF4444 !important; color: #991B1B !important; }
+  .level-advanced:hover { background: #EF4444 !important; color: #fff !important; }
+
   .stats { display: flex; justify-content: space-around; margin-bottom: 15px; background: #f0f4ff; border-radius: 12px; padding: 12px; }
   .stat { font-size: 11px; color: #555; }
   .stat span { display: block; font-size: 20px; font-weight: bold; color: #1E3A8A; }
@@ -113,6 +122,7 @@
   .solution-text { font-size: 14px; color: #334155; line-height: 1.6; white-space: pre-line; }
   button.next-btn { background: linear-gradient(135deg, #10B981, #059669); margin-top: 0; }
   button.next-btn:hover { background: linear-gradient(135deg, #059669, #047857); }
+  
   .game-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 15px; padding-bottom: 12px; border-bottom: 2px solid #eee;
@@ -149,7 +159,7 @@
 <body>
 <div class="container">
 
-  <!-- AUTH -->
+  <!-- SCREEN 1: AUTH -->
   <div id="authScreen" class="screen active">
     <h1>📐 Petualangan Matematika SMP</h1>
     <p class="subtitle">Kurikulum Merdeka · Fase D</p>
@@ -165,11 +175,11 @@
     <button class="btn" onclick="createUser()">Mulai Bermain 🚀</button>
   </div>
 
-  <!-- GRADE -->
-  <div id="gradeScreen" class="screen">
-    <h1>Halo, <span id="greetName"></span>!</h1>
-    <p class="subtitle">Pilih tingkat kesulitan:</p>
-    <div class="grade-grid" id="gradeGrid"></div>
+  <!-- SCREEN 2: CLASS SELECTION -->
+  <div id="classScreen" class="screen">
+    <h1>Halo, <span id="greetNameClass"></span>!</h1>
+    <p class="subtitle">Pilih Kelas Kamu:</p>
+    <div class="menu-grid" id="classGrid"></div>
     <button class="btn" onclick="tampilkanLeaderboard()" style="background:linear-gradient(135deg,#F59E0B,#D97706); color:#fff; margin-bottom:8px;">🏆 Lihat Peringkat Global</button>
     <button class="btn secondary" onclick="logout()">🔄 Ganti Pemain</button>
     <div id="leaderboardArea" class="hidden" style="margin-top:20px;">
@@ -179,14 +189,22 @@
     </div>
   </div>
 
-  <!-- GAME -->
+  <!-- SCREEN 3: LEVEL SELECTION -->
+  <div id="levelScreen" class="screen">
+    <h1 id="levelTitle">Kelas 7 SMP</h1>
+    <p class="subtitle">Pilih Tingkat Kesulitan:</p>
+    <div class="menu-grid" id="levelGrid"></div>
+    <button class="btn secondary" onclick="showClassSelection()">⬅️ Kembali ke Pilih Kelas</button>
+  </div>
+
+  <!-- SCREEN 4: GAME -->
   <div id="gameScreen" class="screen">
     <div class="game-header">
       <div class="user-info">
         <span class="av" id="gAvatar">🧑‍🎓</span>
         <div>
           <div class="nm" id="gName">Player</div>
-          <div class="gr" id="gGrade">Kelas 7 SMP</div>
+          <div class="gr" id="gGrade">Kelas 7 SMP - Beginner</div>
         </div>
       </div>
       <button class="exit-btn" onclick="confirmExit()">✕ Keluar</button>
@@ -207,7 +225,7 @@
     <button class="btn next-btn hidden" id="nextBtn" onclick="goNext()">Lanjut →</button>
   </div>
 
-  <!-- GAME OVER -->
+  <!-- SCREEN 5: GAME OVER -->
   <div id="gameOverScreen" class="screen">
     <h1 id="goTitle">🎉 Selesai!</h1>
     <div class="stars" id="starsEl"></div>
@@ -218,37 +236,42 @@
       <p id="submitStatus" style="font-size:12px;color:#888;margin-top:6px;"></p>
     </div>
     <button class="btn" onclick="playAgain()">Main Lagi 🔄</button>
-    <button class="btn secondary" onclick="backToGrades()">Pilih Kelas Lain 📚</button>
+    <button class="btn secondary" onclick="backToLevels()">Pilih Level Lain 📚</button>
   </div>
 
 </div>
 
 <script>
 // ==================== KONFIGURASI ====================
-// GANTI dengan URL Web App Apps Script SMP Anda (diakhiri /exec)
-const API_URL = 'https://script.google.com/macros/s/AKfycbxQE48HQrbYYBdWo6kCLSGMKK7GerwiQZoIsbrznY8TSRuaMx0WZt7MAZYbUYJp0yTiiw/exec';
+const API_URL = 'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT_SMP';
 
 // ==================== CONSTANTS ====================
 const AVATARS = ['🧑‍🎓','👩‍🎓','👨‍💻','🦸‍♂️','🦸‍♀️','🧙‍♂️','🐺','🦅','⚡','🔥','🌟','🚀'];
-const GRADES = [
-  { id: 7, fase: 'D', desc: 'Bilangan Bulat, Aljabar, Persamaan Linear' },
-  { id: 8, fase: 'D', desc: 'Pythagoras, Persamaan Garis, Statistika' },
-  { id: 9, fase: 'D', desc: 'Persamaan Kuadrat, Bangun Ruang, Peluang' }
+const CLASSES = [
+  { id: 7, desc: 'Bilangan, Aljabar, Perbandingan' },
+  { id: 8, desc: 'Pythagoras, Garis Lurus, Statistika' },
+  { id: 9, desc: 'Persamaan Kuadrat, Bangun Ruang, Peluang' }
+];
+const LEVELS = [
+  { id: 'beginner', name: 'Beginner', emoji: '🟢', desc: 'Soal dasar & konsep utama' },
+  { id: 'intermediate', name: 'Intermediate', emoji: '🟡', desc: 'Soal hitungan 2 langkah' },
+  { id: 'advanced', name: 'Advanced', emoji: '🔴', desc: 'Soal cerita & penalaran' }
 ];
 const TOTAL_QUESTIONS = 10;
 
 // ==================== STATE ====================
 let DB = { users: {}, currentUser: null };
 let selectedAvatar = AVATARS[0];
-let currentGrade = 7;
+let currentClass = 7;
+let currentLevel = 'beginner';
 let score = 0, questionIndex = 0, correctCount = 0;
 let currentQuestion = null, answerLocked = false, audioCtx;
 
 // ==================== STORAGE ====================
-function saveDB() { localStorage.setItem('mathGameSMP_v1', JSON.stringify(DB)); }
+function saveDB() { localStorage.setItem('mathGameSMP_v2', JSON.stringify(DB)); }
 function loadDB() {
   try {
-    const d = localStorage.getItem('mathGameSMP_v1');
+    const d = localStorage.getItem('mathGameSMP_v2');
     if (d) DB = JSON.parse(d);
   } catch(e) { DB = { users: {}, currentUser: null }; }
   if (!DB.users) DB.users = {};
@@ -257,9 +280,6 @@ function loadDB() {
 // ==================== UTILS ====================
 const randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 const gcd = (a, b) => b === 0 ? Math.abs(a) : gcd(b, a % b);
-function getGradeLabel(id) {
-  return `Kelas ${id} SMP · Fase D`;
-}
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -267,9 +287,10 @@ function showScreen(id) {
 
 // ==================== QUESTION HELPERS ====================
 function numQ(t, a, s) { return { text: t, answer: String(a), type: 'numeric', solution: s || '' }; }
+function decQ(t, a, s) { return { text: t, answer: Number(a).toFixed(2), type: 'numeric_dec', solution: s || '' }; }
 function textQ(t, a, dist, s) { return { text: t, answer: a, type: 'text', distractors: dist, solution: s || '' }; }
 
-// ==================== AUTH ====================
+// ==================== AUTH & MENUS ====================
 function renderAuthScreen() {
   const avGrid = document.getElementById('avatarGrid');
   avGrid.innerHTML = '';
@@ -307,6 +328,7 @@ function renderAuthScreen() {
     document.getElementById('createTitle').textContent = 'Buat Pemain Pertama';
   }
 }
+
 function createUser() {
   const name = document.getElementById('nameInput').value.trim();
   if (!name) return alert('Masukkan nama kamu dulu ya!');
@@ -317,132 +339,124 @@ function createUser() {
   document.getElementById('nameInput').value = '';
   loginUser(name);
 }
+
 function loginUser(name) {
   DB.currentUser = name; saveDB();
-  document.getElementById('greetName').textContent = name;
-  showGradeSelection();
+  document.getElementById('greetNameClass').textContent = name;
+  showClassSelection();
 }
+
 function logout() {
   DB.currentUser = null; saveDB();
   showScreen('authScreen'); renderAuthScreen();
 }
-function showGradeSelection() {
-  const user = DB.users[DB.currentUser];
-  const grid = document.getElementById('gradeGrid');
+
+function showClassSelection() {
+  const grid = document.getElementById('classGrid');
   grid.innerHTML = '';
-  GRADES.forEach(g => {
+  CLASSES.forEach(c => {
     const btn = document.createElement('button');
-    btn.className = 'grade-btn';
-    const stat = user.stats[g.id];
-    const bestHtml = stat ? `<span class="best">⭐ Rekor: ${stat.best}</span>` : '';
+    btn.className = 'menu-btn';
     btn.innerHTML = `
       <div class="grade-info">
-        <span class="grade-num">📘 Kelas ${g.id} SMP</span>
-        <small>${g.desc}</small>
-        ${bestHtml}
+        <span class="grade-num">📘 Kelas ${c.id} SMP</span>
+        <small>${c.desc}</small>
       </div>
       <div class="arrow">›</div>
     `;
-    btn.onclick = () => startGame(g.id);
+    btn.onclick = () => showLevelSelection(c.id);
     grid.appendChild(btn);
   });
   document.getElementById('leaderboardArea').classList.add('hidden');
-  showScreen('gradeScreen');
+  showScreen('classScreen');
 }
 
-// ==================== QUESTION GENERATORS (SMP) ====================
-// KELAS 7
-function genKelas7() {
+function showLevelSelection(classId) {
+  currentClass = classId;
+  document.getElementById('levelTitle').textContent = `Kelas ${classId} SMP`;
+  const user = DB.users[DB.currentUser];
+  const grid = document.getElementById('levelGrid');
+  grid.innerHTML = '';
+  
+  LEVELS.forEach(l => {
+    const statKey = `${classId}-${l.id}`;
+    const stat = user.stats[statKey];
+    const bestHtml = stat ? `<span class="best">⭐ Rekor: ${stat.best}</span>` : '';
+    
+    const btn = document.createElement('button');
+    btn.className = `menu-btn level-${l.id}`;
+    btn.innerHTML = `
+      <div class="grade-info">
+        <span class="grade-num">${l.emoji} ${l.name}</span>
+        <small>${l.desc}</small>
+        ${bestHtml}
+      </div>
+      <div class="arrow" style="color: inherit;">›</div>
+    `;
+    btn.onclick = () => startGame(classId, l.id);
+    grid.appendChild(btn);
+  });
+  showScreen('levelScreen');
+}
+
+// ==================== QUESTION GENERATORS (BANK SOAL) ====================
+
+function genBeginner(c) {
   const r = Math.random();
-  // Operasi Bilangan Bulat
-  if (r < 0.25) {
-    const a = randInt(-15, -5), b = randInt(5, 15);
-    return numQ(`${a} + (${b}) = ?`, a+b, `Operasi hitung campuran:\n${a} + ${b} = ${a+b}`);
+  if (c === 7) {
+    if (r < 0.4) { const a = randInt(-10, 20), b = randInt(-10, 20); return numQ(`${a} + (${b}) = ?`, a+b, `Operasi bilangan bulat:\n${a} + ${b} = ${a+b}`); }
+    else if (r < 0.7) { const x = randInt(2, 10), a = randInt(2, 15); return numQ(`x + ${a} = ${x+a}, maka x = ?`, x, `x = ${x+a} - ${a} = ${x}`); }
+    else { const k = randInt(2, 5); return numQ(`Perbandingan A : B = 2 : 3.\nJika A = ${2*k}, maka B = ?`, 3*k, `1 bagian = ${2*k} ÷ 2 = ${k}\nB = 3 × ${k} = ${3*k}`); }
+  } else if (c === 8) {
+    if (r < 0.4) { const triple = [[3,4,5], [6,8,10], [5,12,13]][randInt(0,2)]; return numQ(`Segitiga siku-siku, sisi tegak ${triple[0]} & ${triple[1]}.\nSisi miring = ?`, triple[2], `c² = ${triple[0]}² + ${triple[1]}² = ${triple[2]}²\nc = ${triple[2]}`); }
+    else if (r < 0.7) { const a = randInt(2, 5), b = randInt(3, 8); return numQ(`Suku ke-10 barisan: ${a}, ${a+b}, ${a+2*b}, ...`, a + 9*b, `Un = a + (n-1)b\nU10 = ${a} + 9(${b}) = ${a+9*b}`); }
+    else { const m = randInt(2, 4), c = randInt(1, 5), x = randInt(1, 4); return numQ(`Fungsi f(x) = ${m}x + ${c}.\nNilai f(${x}) = ?`, m*x + c, `f(${x}) = ${m}(${x}) + ${c} = ${m*x+c}`); }
+  } else { // Kelas 9
+    if (r < 0.4) { const p = randInt(1, 4), q = randInt(1, 5); return textQ(`Akar x² + ${p+q}x + ${p*q} = 0 adalah...`, `${-p} & ${-q}`, [`${p} & ${q}`, `${-p} & ${q}`, `${p} & ${-q}`], `(x+${p})(x+${q}) = 0\nx = ${-p} atau x = ${-q}`); }
+    else if (r < 0.7) { const rTab = randInt(3, 7), t = randInt(5, 10); return numQ(`Tabung r=${rTab} cm, t=${t} cm.\nVolume (π=3,14) = ... cm³`, Math.round(3.14 * rTab * rTab * t), `V = 3,14 × ${rTab**2} × ${t} = ${Math.round(3.14 * rTab * rTab * t)}`); }
+    else { return textQ(`Peluang muncul angka genap pada 1 dadu?`, `1/2`, ['1/3', '1/6', '2/3'], `Angka genap: 2, 4, 6 (ada 3).\nPeluang = 3/6 = 1/2`); }
   }
-  // Aljabar Sederhana
-  if (r < 0.45) {
-    const x = randInt(2, 9), a = randInt(2, 5), b = randInt(1, 10);
-    return numQ(`Jika 2x + ${b} = ${2*x+b}, maka x = ?`, x, `2x = ${2*x+b} - ${b}\n2x = ${2*x}\nx = ${x}`);
-  }
-  // Skala / Perbandingan
-  if (r < 0.65) {
-    const k = randInt(2, 5);
-    return numQ(`Perbandingan uang A dan B adalah 2 : 3.\nJika uang B Rp ${3*k*10000}, uang A adalah... (dalam ribu)`, 2*k*10, `B = 3 bagian = ${3*k*10} ribu\n1 bagian = ${k*10} ribu\nA = 2 bagian = 2 × ${k*10} = ${2*k*10} ribu`);
-  }
-  // Pecahan
-  if (r < 0.85) {
-    const b = randInt(2, 5), a = randInt(1, b - 1), d = randInt(3, 6), c = randInt(1, d - 1);
-    const num = a*d + c*b, den = b*d;
-    return numQ(`${a}/${b} + ${c}/${d} = ... (desimal)`, (num/den).toFixed(2), `Samakan penyebut jadi ${den}:\n${a*d}/${den} + ${c*b}/${den} = ${num}/${den}\n${num} ÷ ${den} = ${(num/den).toFixed(2)}`);
-  }
-  // Himpunan / Diagram
-  const sukaA = randInt(10, 15), sukaB = randInt(10, 15), sukaKeduanya = randInt(2, 5);
-  return numQ(`Dari 30 siswa, ${sukaA} suka Matematika, ${sukaB} suka IPA, ${sukaKeduanya} suka keduanya.\nBerapa siswa yang tidak suka keduanya?`, 30 - (sukaA + sukaB - sukaKeduanya), `Total suka = ${sukaA} + ${sukaB} - ${sukaKeduanya} = ${sukaA+sukaB-sukaKeduanya}\nTidak suka = 30 - ${sukaA+sukaB-sukaKeduanya} = ${30-(sukaA+sukaB-sukaKeduanya)}`);
 }
 
-// KELAS 8
-function genKelas8() {
+function genIntermediate(c) {
   const r = Math.random();
-  // Pythagoras
-  if (r < 0.3) {
-    const triple = [[3,4,5], [6,8,10], [5,12,13], [8,15,17]][randInt(0,3)];
-    return numQ(`Segitiga siku-siku memiliki sisi tegak ${triple[0]} cm dan ${triple[1]} cm.\nPanjang sisi miring (hipotenusa) = ... cm`, triple[2], `c² = a² + b²\nc² = ${triple[0]}² + ${triple[1]}²\nc² = ${triple[0]**2} + ${triple[1]**2} = ${triple[2]**2}\nc = √${triple[2]**2} = ${triple[2]}`);
+  if (c === 7) {
+    if (r < 0.4) { const x = randInt(2, 9), a = randInt(2, 5), b = randInt(1, 10); return numQ(`Jika ${a}x − ${b} = ${a*x-b}, maka x = ?`, x, `${a}x = ${a*x-b} + ${b} = ${a*x}\nx = ${x}`); }
+    else if (r < 0.7) { const b = randInt(2, 5), a = randInt(1, b-1), d = randInt(3, 6), c = randInt(1, d-1); const num = a*d + c*b, den = b*d; return decQ(`${a}/${b} + ${c}/${d} = ... (desimal)`, (num/den), `Samakan penyebut jadi ${den}:\n${a*d}/${den} + ${c*b}/${den} = ${num}/${den}\n${num} ÷ ${den} = ${(num/den).toFixed(2)}`); }
+    else { const sukaA = randInt(10, 15), sukaB = randInt(10, 15), sukaKeduanya = randInt(2, 5); return numQ(`Dari 30 siswa, ${sukaA} suka MTK, ${sukaB} suka IPA, ${sukaKeduanya} suka keduanya.\nYang tidak suka keduanya = ?`, 30 - (sukaA + sukaB - sukaKeduanya), `Total suka = ${sukaA} + ${sukaB} - ${sukaKeduanya} = ${sukaA+sukaB-sukaKeduanya}\nTidak suka = 30 - ${sukaA+sukaB-sukaKeduanya} = ${30-(sukaA+sukaB-sukaKeduanya)}`); }
+  } else if (c === 8) {
+    if (r < 0.4) { const m = randInt(2, 5), c = randInt(-5, 5), x = randInt(1, 5); return numQ(`Garis y = ${m}x ${c >= 0 ? '+' : '−'} ${Math.abs(c)}.\nNilai y jika x = ${x}?`, m*x + c, `y = ${m}(${x}) ${c >= 0 ? '+' : '−'} ${Math.abs(c)} = ${m*x+c}`); }
+    else if (r < 0.7) { const n1 = randInt(60, 80), n2 = randInt(70, 90), n3 = randInt(75, 95), n4 = randInt(80, 100); return decQ(`Nilai ulangan: ${n1}, ${n2}, ${n3}, ${n4}.\nRata-rata (mean) = ?`, (n1+n2+n3+n4)/4, `Mean = (${n1}+${n2}+${n3}+${n4}) ÷ 4\nMean = ${n1+n2+n3+n4} ÷ 4 = ${((n1+n2+n3+n4)/4).toFixed(2)}`); }
+    else { const x1 = 2, y1 = 3, x2 = 5, y2 = 9; return numQ(`Fungsi f(x) = ax + b.\nJika f(2) = 3 dan f(5) = 9, maka a = ?`, 2, `2a + b = 3\n5a + b = 9\n---------------- -\n-3a = -6 → a = 2`); }
+  } else { // Kelas 9
+    if (r < 0.4) { const xPuncak = randInt(1, 5), yPuncak = randInt(-10, -2); return textQ(`Grafik y = (x − ${xPuncak})² ${yPuncak >= 0 ? '+' : '−'} ${Math.abs(yPuncak)}.\nTitik puncaknya adalah...`, `(${xPuncak}, ${yPuncak})`, [`(${-xPuncak}, ${yPuncak})`, `(${xPuncak}, ${-yPuncak})`, `(${-xPuncak}, ${-yPuncak})`], `Bentuk y = (x − p)² + q → puncak (p, q).\nMaka puncak = (${xPuncak}, ${yPuncak})`); }
+    else if (r < 0.7) { const a = randInt(3, 6), b = randInt(5, 8); return numQ(`Segitiga A sisi ${a} cm & ${b} cm. Segitiga B sebangun, sisi yang bersesuaian dengan ${a} adalah ${a*2} cm.\nSisi B yang bersesuaian dengan ${b} = ?`, b*2, `Skala = ${a*2} ÷ ${a} = 2\nSisi B = ${b} × 2 = ${b*2} cm`); }
+    else { const merah = randInt(3, 6), biru = randInt(2, 5); const total = merah + biru; return decQ(`Kantong berisi ${merah} kelereng merah & ${biru} biru.\nPeluang terambil merah (desimal)?`, (merah/total), `Peluang = ${merah} / ${total} = ${(merah/total).toFixed(2)}`); }
   }
-  // Pola Bilangan
-  if (r < 0.5) {
-    const a = randInt(2, 5), b = randInt(3, 8);
-    return numQ(`Suku ke-10 dari barisan aritmetika: ${a}, ${a+b}, ${a+2*b}, ...`, a + 9*b, `Un = a + (n-1)b\nU10 = ${a} + (10-1) × ${b}\nU10 = ${a} + 9 × ${b} = ${a + 9*b}`);
-  }
-  // Persamaan Garis Lurus
-  if (r < 0.7) {
-    const m = randInt(2, 5), c = randInt(-5, 5);
-    const x = randInt(1, 5);
-    return numQ(`Garis y = ${m}x ${c >= 0 ? '+' : '−'} ${Math.abs(c)}.\nBerapakah nilai y jika x = ${x}?`, m*x + c, `y = ${m}(${x}) ${c >= 0 ? '+' : '−'} ${Math.abs(c)}\ny = ${m*x} ${c >= 0 ? '+' : '−'} ${Math.abs(c)} = ${m*x+c}`);
-  }
-  // Statistika (Mean)
-  if (r < 0.85) {
-    const n1 = randInt(60, 80), n2 = randInt(70, 90), n3 = randInt(75, 95), n4 = randInt(80, 100);
-    const mean = Math.round((n1+n2+n3+n4)/4 * 10) / 10;
-    return numQ(`Nilai ulangan Budi: ${n1}, ${n2}, ${n3}, ${n4}.\nRata-rata (mean) nilainya adalah...`, mean, `Mean = (${n1}+${n2}+${n3}+${n4}) ÷ 4\nMean = ${n1+n2+n3+n4} ÷ 4 = ${mean}`);
-  }
-  // Relasi & Fungsi
-  const x1 = 2, y1 = 3, x2 = 5, y2 = 9;
-  return numQ(`Fungsi f(x) = ax + b.\nJika f(2) = 3 dan f(5) = 9, maka nilai a adalah...`, 2, `f(2): 2a + b = 3\nf(5): 5a + b = 9\n------------------- -\n-3a = -6\na = 2`);
 }
 
-// KELAS 9
-function genKelas9() {
+function genAdvanced(c) {
   const r = Math.random();
-  // Persamaan Kuadrat (Pemfaktoran)
-  if (r < 0.3) {
-    const p = randInt(1, 5), q = randInt(1, 5);
-    // (x+p)(x+q) = x^2 + (p+q)x + pq
-    return numQ(`Akar-akar dari persamaan x² + ${p+q}x + ${p*q} = 0 adalah...`, `${-p} dan ${-q}`, `Faktorkan: (x + ${p})(x + ${q}) = 0\nx + ${p} = 0 → x = ${-p}\nx + ${q} = 0 → x = ${-q}`);
+  if (c === 7) {
+    if (r < 0.4) { const x = randInt(2, 5), y = randInt(1, 4); return numQ(`Harga 2 buku + 1 pulpen = Rp ${2*x*1000 + y*1000}.\nJika pulpen Rp ${y*1000}, harga 1 buku = ... (dalam ribu)`, x, `2 buku = ${2*x*1000 + y*1000} - ${y*1000} = ${2*x*1000}\n1 buku = ${2*x*1000} ÷ 2 = ${x*1000}`); }
+    else if (r < 0.7) { const a = randInt(2, 5), b = randInt(3, 7); return numQ(`Sebuah pekerjaan selesai dalam ${a} hari oleh ${b} orang.\nJika ada ${b*2} orang, berapa hari selesai?`, (a/2), `Perbandingan berbalik nilai:\n${b} orang = ${a} hari\n${b*2} orang = (${b} × ${a}) ÷ ${b*2} = ${(b*a)/(b*2)} hari`); }
+    else { const x = randInt(1, 5), y = randInt(1, 5); return numQ(`x + y = ${x+y}\nx − y = ${x-y}\nNilai x adalah...`, x, `Eliminasi:\n(x+y) + (x-y) = ${x+y} + ${x-y}\n2x = ${2*x} → x = ${x}`); }
+  } else if (c === 8) {
+    if (r < 0.4) { const x = randInt(1, 5), y = randInt(1, 5); return numQ(`x + y = ${x+y}\n2x − y = ${2*x - y}\nNilai x adalah...`, x, `Jumlahkan kedua persamaan:\n(x+y) + (2x-y) = ${x+y} + ${2*x-y}\n3x = ${3*x} → x = ${x}`); }
+    else if (r < 0.7) { const t = randInt(6, 10), s = randInt(4, 8); return numQ(`Sebuah tangga panjang ${t} m bersandar pada dinding. Jarak kaki tangga ke dinding ${s} m.\nTinggi ujung tangga di dinding = ... m`, Math.sqrt(t*t - s*s), `t² = s² + h²\n${t}² = ${s}² + h²\n${t*t} = ${s*s} + h²\nh² = ${t*t - s*s}\nh = √${t*t - s*s} = ${Math.sqrt(t*t - s*s)}`); }
+    else { const l1 = randInt(10, 20), l2 = randInt(10, 20), l3 = randInt(20, 30), l4 = randInt(20, 30); return decQ(`Data: ${l1}, ${l2}, ${l3}, ${l4}.\nMedian data tersebut adalah...`, (l2+l3)/2, `Urutkan: ${[l1,l2,l3,l4].sort((a,b)=>a-b).join(', ')}\nMedian = (${l2} + ${l3}) ÷ 2 = ${((l2+l3)/2).toFixed(2)}`); }
+  } else { // Kelas 9
+    if (r < 0.4) { const x = randInt(1, 5), y = randInt(1, 5); return numQ(`x + y = ${x+y}\nx − y = ${x-y}\nNilai x² + y² = ?`, x*x + y*y, `x = ${x}, y = ${y}\n${x}² + ${y}² = ${x*x} + ${y*y} = ${x*x+y*y}`); }
+    else if (r < 0.7) { const a = randInt(2, 5), b = randInt(2, 5); return numQ(`Persamaan kuadrat x² − ${a+b}x + ${a*b} = 0 memiliki akar p dan q.\nNilai p + q = ?`, a+b, `Rumus jumlah akar: p + q = -b/a\np + q = ${a+b} / 1 = ${a+b}`); }
+    else { const vTab = randInt(10, 20), tTab = randInt(10, 20), rKer = randInt(5, 10); return numQ(`Tabung (V=${vTab*10}) dan kerucut (r sama) memiliki tinggi sama.\nVolume kerucut = ?`, Math.round(vTab*10/3), `Volume kerucut = 1/3 × Volume Tabung\n= 1/3 × ${vTab*10} = ${Math.round(vTab*10/3)}`); }
   }
-  // Bangun Ruang Sisi Lengkung (Tabung)
-  if (r < 0.55) {
-    const rTab = randInt(3, 7), t = randInt(5, 10);
-    const vol = Math.round(Math.PI * rTab * rTab * t);
-    return numQ(`Tabung dengan jari-jari ${rTab} cm dan tinggi ${t} cm.\nVolume (π ≈ 3,14) = ... cm³`, vol, `V = π × r² × t\nV = 3,14 × ${rTab}² × ${t}\nV = 3,14 × ${rTab**2} × ${t} ≈ ${vol}`);
-  }
-  // Peluang
-  if (r < 0.75) {
-    const dadu = randInt(2, 6);
-    return numQ(`Sebuah dadu dilempar sekali.\nPeluang muncul mata dadu kelipatan ${dadu} adalah...`, `2/6`, `Mata dadu kelipatan ${dadu} ada 2 (yaitu ${dadu} dan ${dadu*2}).\nTotal ruang sampel = 6.\nPeluang = 2/6`);
-  }
-  // Kesebangunan
-  if (r < 0.9) {
-    const a = randInt(3, 6), b = randInt(5, 8), c = randInt(9, 15);
-    return numQ(`Dua segitiga sebangun. Sisi segitiga A = ${a} cm dan ${b} cm.\nSisi segitiga B yang bersesuaian dengan ${a} adalah ${a*2} cm.\nBerapakah panjang sisi B yang bersesuaian dengan ${b}?`, b*2, `Faktor skala = ${a*2} ÷ ${a} = 2\nSisi B = ${b} × 2 = ${b*2} cm`);
-  }
-  // Fungsi Kuadrat
-  const xPuncak = randInt(1, 5);
-  const yPuncak = randInt(-10, -2);
-  return numQ(`Grafik fungsi y = (x − ${xPuncak})² ${yPuncak >= 0 ? '+' : '−'} ${Math.abs(yPuncak)}.\nKoordinat titik puncaknya adalah...`, `(${xPuncak}, ${yPuncak})`, `Bentuk y = (x − p)² + q memiliki puncak (p, q).\nMaka puncak = (${xPuncak}, ${yPuncak})`);
 }
 
-function generateQuestion(g) {
-  return ({ 7: genKelas7, 8: genKelas8, 9: genKelas9 }[g] || genKelas7)();
+function generateQuestion(c, l) {
+  if (l === 'beginner') return genBeginner(c);
+  if (l === 'intermediate') return genIntermediate(c);
+  if (l === 'advanced') return genAdvanced(c);
+  return genBeginner(c);
 }
 
 // ==================== OPTIONS ====================
@@ -463,8 +477,6 @@ function generateNumericOptions(n) {
 function generateOptions(q) {
   const { answer, type } = q;
   if (type === 'text') return [answer, ...q.distractors].slice(0,4).sort(() => Math.random() - 0.5);
-  
-  // Perbaikan Desimal: Paksa pilihan ganda pakai 2 angka di belakang koma
   if (answer.includes('.')) {
     const n = parseFloat(answer);
     const opts = new Set([answer]);
@@ -479,21 +491,22 @@ function generateOptions(q) {
     while (opts.size < 4) opts.add((n + opts.size * 0.1).toFixed(2));
     return [...opts].sort(() => Math.random() - 0.5);
   }
-  
   return generateNumericOptions(parseInt(answer) || answer);
 }
 
 // ==================== GAME ====================
-function startGame(gradeId) {
-  currentGrade = gradeId;
+function startGame(classId, levelId) {
+  currentClass = classId;
+  currentLevel = levelId;
   score = 0; questionIndex = 0; correctCount = 0;
   const user = DB.users[DB.currentUser];
   document.getElementById('gAvatar').textContent = user.avatar;
   document.getElementById('gName').textContent = DB.currentUser;
-  document.getElementById('gGrade').textContent = getGradeLabel(gradeId);
+  document.getElementById('gGrade').textContent = `Kelas ${classId} - ${levelId.charAt(0).toUpperCase() + levelId.slice(1)}`;
   showScreen('gameScreen');
   nextQuestion();
 }
+
 function nextQuestion() {
   answerLocked = false;
   document.getElementById('feedbackEl').textContent = '';
@@ -501,7 +514,7 @@ function nextQuestion() {
   document.getElementById('solutionBox').classList.add('hidden');
   document.getElementById('nextBtn').classList.add('hidden');
 
-  currentQuestion = generateQuestion(currentGrade);
+  currentQuestion = generateQuestion(currentClass, currentLevel);
   const qEl = document.getElementById('questionEl');
   qEl.textContent = currentQuestion.text;
   qEl.classList.remove('long', 'very-long');
@@ -522,12 +535,14 @@ function nextQuestion() {
   });
   updateGameStats();
 }
+
 function updateGameStats() {
   document.getElementById('scoreEl').textContent = score;
   document.getElementById('qNumEl').textContent = `${Math.min(questionIndex+1, TOTAL_QUESTIONS)}/${TOTAL_QUESTIONS}`;
   document.getElementById('correctEl').textContent = correctCount;
   document.getElementById('progressFill').style.width = (questionIndex / TOTAL_QUESTIONS * 100) + '%';
 }
+
 function handleAnswer(btn, chosen) {
   if (answerLocked) return;
   answerLocked = true;
@@ -558,20 +573,23 @@ function handleAnswer(btn, chosen) {
   nextBtn.classList.remove('hidden');
   nextBtn.textContent = (questionIndex === TOTAL_QUESTIONS - 1) ? 'Lihat Hasil 🏁' : 'Lanjut →';
 }
+
 function goNext() {
   questionIndex++;
   if (questionIndex >= TOTAL_QUESTIONS) endGame();
   else nextQuestion();
 }
+
 function endGame() {
   const user = DB.users[DB.currentUser];
+  const statKey = `${currentClass}-${currentLevel}`;
   if (!user.stats) user.stats = {};
-  if (!user.stats[currentGrade]) user.stats[currentGrade] = { best: 0, plays: 0, correct: 0 };
-  const oldBest = user.stats[currentGrade].best || 0;
+  if (!user.stats[statKey]) user.stats[statKey] = { best: 0, plays: 0, correct: 0 };
+  const oldBest = user.stats[statKey].best || 0;
   const isNewBest = score > oldBest;
-  user.stats[currentGrade].plays++;
-  user.stats[currentGrade].correct += correctCount;
-  if (isNewBest) user.stats[currentGrade].best = score;
+  user.stats[statKey].plays++;
+  user.stats[statKey].correct += correctCount;
+  if (isNewBest) user.stats[statKey].best = score;
   user.totalGames = (user.totalGames || 0) + 1;
   saveDB();
 
@@ -589,7 +607,7 @@ function endGame() {
   const statusEl = document.getElementById('submitStatus');
   if (score > 0) {
     statusEl.textContent = '⏳ Mengirim skor ke peringkat global...';
-    kirimSkorKeSheets(DB.currentUser, currentGrade, score, correctCount, (ok) => {
+    kirimSkorKeSheets(DB.currentUser, `Kelas ${currentClass} - ${currentLevel}`, score, correctCount, (ok) => {
       statusEl.textContent = ok ? '✅ Skor terkirim ke peringkat global!' : '⚠️ Gagal mengirim skor (mungkin offline).';
     });
   } else {
@@ -598,43 +616,35 @@ function endGame() {
 
   showScreen('gameOverScreen');
 }
-function playAgain() { startGame(currentGrade); }
-function backToGrades() { showGradeSelection(); }
+
+function playAgain() { startGame(currentClass, currentLevel); }
+function backToLevels() { showLevelSelection(currentClass); }
 function confirmExit() {
-  if (confirm('Keluar dari permainan? Skor tidak akan disimpan.')) showGradeSelection();
+  if (confirm('Keluar dari permainan? Skor tidak akan disimpan.')) showLevelSelection(currentClass);
 }
 
 // ==================== LEADERBOARD API ====================
 function kirimSkorKeSheets(nama, kelas, skor, benar, callback) {
   if (!API_URL || API_URL.includes('GANTI_DENGAN')) {
-    console.warn('API_URL belum diset');
     if (callback) callback(false);
     return;
   }
-  const payload = JSON.stringify({
-    nama, kelas: `Kelas ${kelas} SMP`, skor, benar
-  });
+  const payload = JSON.stringify({ nama, kelas, skor, benar });
   fetch(API_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: payload
   }).then(() => { if (callback) callback(true); })
-    .catch(err => { console.warn('Kirim gagal:', err); if (callback) callback(false); });
+    .catch(err => { if (callback) callback(false); });
 }
 
 function muatLeaderboard(callback) {
-  if (!API_URL || API_URL.includes('GANTI_DENGAN')) {
-    callback(null);
-    return;
-  }
+  if (!API_URL || API_URL.includes('GANTI_DENGAN')) { callback(null); return; }
   fetch(`${API_URL}?limit=20`)
     .then(res => res.json())
     .then(data => callback(data))
-    .catch(err => {
-      console.warn('Gagal memuat leaderboard:', err);
-      callback(null);
-    });
+    .catch(err => callback(null));
 }
 
 function tampilkanLeaderboard() {
@@ -668,7 +678,7 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// ==================== SOUND ====================
+// ==================== SOUND & INIT ====================
 function playSound(freq) {
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -682,14 +692,12 @@ function playSound(freq) {
   } catch(e) {}
 }
 
-// ==================== SERVICE WORKER ====================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
 
-// ==================== INIT ====================
 loadDB();
 renderAuthScreen();
 document.getElementById('nameInput').addEventListener('keypress', e => {
