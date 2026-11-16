@@ -371,7 +371,7 @@ function genKelas7() {
   }
   // Pecahan
   if (r < 0.85) {
-    const a = randInt(1, 3), b = randInt(2, 5), c = randInt(1, 2), d = randInt(3, 6);
+    const b = randInt(2, 5), a = randInt(1, b - 1), d = randInt(3, 6), c = randInt(1, d - 1);
     const num = a*d + c*b, den = b*d;
     return numQ(`${a}/${b} + ${c}/${d} = ... (desimal)`, (num/den).toFixed(2), `Samakan penyebut jadi ${den}:\n${a*d}/${den} + ${c*b}/${den} = ${num}/${den}\n${num} ÷ ${den} = ${(num/den).toFixed(2)}`);
   }
@@ -463,6 +463,23 @@ function generateNumericOptions(n) {
 function generateOptions(q) {
   const { answer, type } = q;
   if (type === 'text') return [answer, ...q.distractors].slice(0,4).sort(() => Math.random() - 0.5);
+  
+  // Perbaikan Desimal: Paksa pilihan ganda pakai 2 angka di belakang koma
+  if (answer.includes('.')) {
+    const n = parseFloat(answer);
+    const opts = new Set([answer]);
+    let t = 0;
+    while (opts.size < 4 && t < 100) {
+      t++;
+      let off = randInt(1, 15) / 10;
+      if (Math.random() < 0.5) off = -off;
+      const c = Math.round((n + off) * 10) / 10;
+      if (c >= 0) opts.add(c.toFixed(2));
+    }
+    while (opts.size < 4) opts.add((n + opts.size * 0.1).toFixed(2));
+    return [...opts].sort(() => Math.random() - 0.5);
+  }
+  
   return generateNumericOptions(parseInt(answer) || answer);
 }
 
